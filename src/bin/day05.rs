@@ -191,7 +191,7 @@ fn part2(contents: &str)
 
     for map in 0..maps.len()
     {
-        println!("{}", maps[map].name);
+        //println!("{}", maps[map].name);
         seeds = create_new_ranges(seeds, &maps[map]);
     }
 
@@ -211,7 +211,7 @@ fn create_new_ranges(mut oldRanges: Vec<u64>, map: &Map) -> Vec<u64>
 {
     let mut newRanges: Vec<u64> = Vec::new();
 
-    println!("{}", newRanges.len());
+    //println!("{}", newRanges.len());
     let mut finished = false;
     let mut i = 0;
     while !finished
@@ -310,7 +310,7 @@ fn create_new_ranges(mut oldRanges: Vec<u64>, map: &Map) -> Vec<u64>
                 break;
             }
 
-            println!("Here\n min = {} max = {}\nsrc = {} src len = {}", min, max, entry.src, entry.src+entry.len);
+            //println!("Here\n min = {} max = {}\nsrc = {} src len = {}", min, max, entry.src, entry.src+entry.len);
         }
 
         if !found
@@ -329,7 +329,7 @@ fn create_new_ranges(mut oldRanges: Vec<u64>, map: &Map) -> Vec<u64>
         }
     }
 
-    println!("new ranges len ={}", newRanges.len().to_string());
+    //println!("new ranges len ={}", newRanges.len().to_string());
 
     return newRanges;
 }
