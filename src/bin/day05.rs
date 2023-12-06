@@ -36,7 +36,7 @@ fn part1(contents: &str)
     let lines_to_process: Vec<&str> = contents.lines().filter(|s| !s.is_empty()).collect();
     //let splits: Vec<&str> = contents.lines().collect();
     let mut line_iter = lines_to_process.iter();
-    let mut seeds_line: Vec<&str>= line_iter.next().unwrap().split(':').collect();
+    let seeds_line: Vec<&str>= line_iter.next().unwrap().split(':').collect();
     let mut seed_iter = seeds_line.iter();
     let _seed_header = seed_iter.next().unwrap();
 
@@ -65,7 +65,7 @@ fn part1(contents: &str)
         else 
         {
             let mut entry: MapEntry = MapEntry { dest: 0, src: 0, len: 0 };
-            let mut splits: Vec<u64> = s.split_whitespace().map(|n| n.parse::<u64>().unwrap()).collect();
+            let splits: Vec<u64> = s.split_whitespace().map(|n| n.parse::<u64>().unwrap()).collect();
 
             entry.dest = splits[0];
             entry.src = splits[1];
@@ -115,7 +115,7 @@ fn part2(contents: &str)
     let lines_to_process: Vec<&str> = contents.lines().filter(|s| !s.is_empty()).collect();
     //let splits: Vec<&str> = contents.lines().collect();
     let mut line_iter = lines_to_process.iter();
-    let mut seeds_line: Vec<&str>= line_iter.next().unwrap().split(':').collect();
+    let seeds_line: Vec<&str>= line_iter.next().unwrap().split(':').collect();
     let mut seed_iter = seeds_line.iter();
     let _seed_header = seed_iter.next().unwrap();
 
@@ -144,7 +144,7 @@ fn part2(contents: &str)
         else 
         {
             let mut entry: MapEntry = MapEntry { dest: 0, src: 0, len: 0 };
-            let mut splits: Vec<u64> = s.split_whitespace().map(|n| n.parse::<u64>().unwrap()).collect();
+            let splits: Vec<u64> = s.split_whitespace().map(|n| n.parse::<u64>().unwrap()).collect();
 
             entry.dest = splits[0];
             entry.src = splits[1];
@@ -217,8 +217,8 @@ fn create_new_ranges(mut oldRanges: Vec<u64>, map: &Map) -> Vec<u64>
     while !finished
     //for i in (0..oldRanges.len()).step_by(2)
     {
-        let mut min = oldRanges[i];
-        let mut max = min + oldRanges[i+1];
+        let min = oldRanges[i];
+        let max = min + oldRanges[i+1];
 
         //println!("{min}, {max}");
 
@@ -296,7 +296,7 @@ fn create_new_ranges(mut oldRanges: Vec<u64>, map: &Map) -> Vec<u64>
             if min < entry.src && max < entry.src
             {
                 //println!("Here 3");
-                let diff = max - entry.src;
+                let _diff = max - entry.src;
                 let destRangeStart = entry.dest;
                 let destRangeEnd = (entry.dest + entry.len) - destRangeStart;
 
