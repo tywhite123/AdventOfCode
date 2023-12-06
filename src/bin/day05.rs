@@ -86,13 +86,13 @@ fn part1(contents: &str)
             //println!("Current map: {}", maps[map].name);
             for entry in 0..maps[map].entries.len()
             {
-                let mapEntry = &maps[map].entries[entry];
+                let map_entry = &maps[map].entries[entry];
                 //println!("Current src = {}, src + len = {}", mapEntry.src.to_string(), (mapEntry.src+mapEntry.len).to_string());
-                let srcLen = mapEntry.src+mapEntry.len;
-                if current_location >= mapEntry.src && current_location < srcLen
+                let src_len = map_entry.src+map_entry.len;
+                if current_location >= map_entry.src && current_location < src_len
                 {
-                    let diff = current_location - mapEntry.src;
-                    current_location = mapEntry.dest + diff;
+                    let diff = current_location - map_entry.src;
+                    current_location = map_entry.dest + diff;
                     //println!("Current location = {current_location}, diff = {diff}, dest = {}", mapEntry.dest.to_string());
                     break;
                 }
@@ -156,39 +156,6 @@ fn part2(contents: &str)
     }
 
     let mut lowest_location = u64::MAX;
-    // for seed_start in (0..seeds.len()).step_by(2)
-    // { 
-    //     let seed_range_len = seeds[seed_start+1];
-    //     for current_seed in 0..seed_range_len
-    //     {
-    //         let seed: u64 = seeds[seed_start] + current_seed;
-    //         println!("Current Seed = {}", seed);
-    //         let mut current_location: u64 = seed;
-    //         for map in 0..maps.len()
-    //         {
-    //             //println!("Current map: {}", maps[map].name);
-    //             for entry in 0..maps[map].entries.len()
-    //             {
-    //                 let mapEntry = &maps[map].entries[entry];
-    //                 //println!("Current src = {}, src + len = {}", mapEntry.src.to_string(), (mapEntry.src+mapEntry.len).to_string());
-    //                 let srcLen = mapEntry.src+mapEntry.len;
-    //                 if current_location >= mapEntry.src && current_location < srcLen
-    //                 {
-    //                     let diff = current_location - mapEntry.src;
-    //                     current_location = mapEntry.dest + diff;
-    //                     //println!("Current location = {current_location}, diff = {diff}, dest = {}", mapEntry.dest.to_string());
-    //                     break;
-    //                 }
-    //             }
-    //         }
-        
-    //         if lowest_location > current_location
-    //         {
-    //             lowest_location = current_location;
-    //         }
-    //     }
-    // }
-
     for map in 0..maps.len()
     {
         //println!("{}", maps[map].name);
@@ -207,9 +174,9 @@ fn part2(contents: &str)
     println!("Part 2 Answer = {lowest_location}");
 }
 
-fn create_new_ranges(mut oldRanges: Vec<u64>, map: &Map) -> Vec<u64>
+fn create_new_ranges(mut old_ranges: Vec<u64>, map: &Map) -> Vec<u64>
 {
-    let mut newRanges: Vec<u64> = Vec::new();
+    let mut new_ranges: Vec<u64> = Vec::new();
 
     //println!("{}", newRanges.len());
     let mut finished = false;
@@ -217,8 +184,8 @@ fn create_new_ranges(mut oldRanges: Vec<u64>, map: &Map) -> Vec<u64>
     while !finished
     //for i in (0..oldRanges.len()).step_by(2)
     {
-        let min = oldRanges[i];
-        let max = min + oldRanges[i+1];
+        let min = old_ranges[i];
+        let max = min + old_ranges[i+1];
 
         //println!("{min}, {max}");
 
@@ -246,11 +213,11 @@ fn create_new_ranges(mut oldRanges: Vec<u64>, map: &Map) -> Vec<u64>
             {
                 //println!("Here 1");
                 let diff = min - entry.src;
-                let destRangeStart = entry.dest + diff;
-                let destRangeEnd = oldRanges[i+1];
+                let dest_range_start = entry.dest + diff;
+                let dest_range_end = old_ranges[i+1];
 
-                newRanges.push(destRangeStart);
-                newRanges.push(destRangeEnd);
+                new_ranges.push(dest_range_start);
+                new_ranges.push(dest_range_end);
 
                 found = true;
                 break;
@@ -259,17 +226,17 @@ fn create_new_ranges(mut oldRanges: Vec<u64>, map: &Map) -> Vec<u64>
             if min < entry.src && max >= entry.src+entry.len
             {
                 //println!("Here 4");
-                let destRangeStart = entry.dest;
-                let destRangeEnd = (entry.dest + entry.len) - destRangeStart;
+                let dest_range_start = entry.dest;
+                let dest_range_end = (entry.dest + entry.len) - dest_range_start;
 
-                oldRanges.push(min);
-                oldRanges.push(entry.src-min);
+                old_ranges.push(min);
+                old_ranges.push(entry.src-min);
 
-                oldRanges.push(entry.src+entry.len);
-                oldRanges.push(max - (entry.src+entry.len));
+                old_ranges.push(entry.src+entry.len);
+                old_ranges.push(max - (entry.src+entry.len));
 
-                newRanges.push(destRangeStart);
-                newRanges.push(destRangeEnd);
+                new_ranges.push(dest_range_start);
+                new_ranges.push(dest_range_end);
 
                 found = true;
                 break;
@@ -279,15 +246,15 @@ fn create_new_ranges(mut oldRanges: Vec<u64>, map: &Map) -> Vec<u64>
             {
                 //println!("Here 2");
                 let diff = min - entry.src;
-                let destRangeStart = entry.dest + diff;
+                let dest_range_start = entry.dest + diff;
                 //println!("Min {} Src {} {}", oldRanges[i+1], entry.dest + entry.len, diff);
-                let destRangeEnd = ((entry.dest + entry.len)) - destRangeStart;
+                let dest_range_end = ((entry.dest + entry.len)) - dest_range_start;
 
-                oldRanges.push(entry.src+entry.len);
-                oldRanges.push(oldRanges[i+1] - destRangeEnd);
+                old_ranges.push(entry.src+entry.len);
+                old_ranges.push(old_ranges[i+1] - dest_range_end);
 
-                newRanges.push(destRangeStart);
-                newRanges.push(destRangeEnd);
+                new_ranges.push(dest_range_start);
+                new_ranges.push(dest_range_end);
 
                 found = true;
                 break;
@@ -297,14 +264,14 @@ fn create_new_ranges(mut oldRanges: Vec<u64>, map: &Map) -> Vec<u64>
             {
                 //println!("Here 3");
                 let _diff = max - entry.src;
-                let destRangeStart = entry.dest;
-                let destRangeEnd = (entry.dest + entry.len) - destRangeStart;
+                let dest_range_start = entry.dest;
+                let dest_range_end = (entry.dest + entry.len) - dest_range_start;
 
-                oldRanges.push(min);
-                oldRanges.push(entry.src-min);
+                old_ranges.push(min);
+                old_ranges.push(entry.src-min);
 
-                newRanges.push(destRangeStart);
-                newRanges.push(destRangeEnd);
+                new_ranges.push(dest_range_start);
+                new_ranges.push(dest_range_end);
 
                 found = true;
                 break;
@@ -316,13 +283,13 @@ fn create_new_ranges(mut oldRanges: Vec<u64>, map: &Map) -> Vec<u64>
         if !found
         {
             //println!("Here 5");
-            newRanges.push(oldRanges[i]);
-            newRanges.push(oldRanges[i+1]);
+            new_ranges.push(old_ranges[i]);
+            new_ranges.push(old_ranges[i+1]);
         }
 
         i+=2;
         //println!("{i}");
-        if i >= oldRanges.len()
+        if i >= old_ranges.len()
         {
             //println!("Here 10");
             finished = true;
@@ -331,10 +298,5 @@ fn create_new_ranges(mut oldRanges: Vec<u64>, map: &Map) -> Vec<u64>
 
     //println!("new ranges len ={}", newRanges.len().to_string());
 
-    return newRanges;
-}
-
-fn is_even(n: usize) -> bool
-{
-    n % 2 == 0
+    return new_ranges;
 }
