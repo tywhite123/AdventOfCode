@@ -24,8 +24,6 @@ fn part1(contents: &str)
         let re2 = Regex::new(r"[^0-9a-zA-z\s]?\d+[^0-9a-zA-Z\s]?").unwrap();
         let captures2: Vec<&str> = re2.find_iter(line).map(|capture| capture.as_str()).collect();
 
-        let re = Regex::new(r"(\d+)").unwrap();
-        let captures: Vec<&str> = re.find_iter(line).map(|capture| capture.as_str()).collect();
         for capture in captures2
         {
             let mut data: CaptureData = CaptureData { capture_string: "".to_owned() , capture_pos: 0, capture_line: 0, capture_len: 0 };
@@ -42,48 +40,34 @@ fn part1(contents: &str)
     let lines: Vec<&str> = contents.lines().collect();
     let re2 = Regex::new(r"([^0-9.]){1}").unwrap();
     let mut total = 0;
-    for (i, capture) in capture_list.iter().enumerate(){
+    for (_i, capture) in capture_list.iter().enumerate(){
         let line = lines[capture.capture_line];
         let before = if capture.capture_line > 0 {lines[capture.capture_line-1]} else {""};
         let after = if capture.capture_line < lines.len()-1 {lines[capture.capture_line+1]} else {""};
 
-        let mut checkStart = capture.capture_pos;
-        if checkStart > 0
+        let mut check_start = capture.capture_pos;
+        if check_start > 0
         {
-            let s = line.chars().nth(checkStart).unwrap();
+            let s = line.chars().nth(check_start).unwrap();
             let re2 = Regex::new(r"([0-9]){1}").unwrap();
             if re2.is_match(&s.to_string())
             {
                 //println!("{}", &s.to_string());
-                checkStart -= 1;
+                check_start -= 1;
             }
         }
-        let mut checkEnd = capture.capture_pos + capture.capture_len;
+        let check_end = capture.capture_pos + capture.capture_len;
         
         //println!("{} {checkStart} {checkEnd} {}", capture.capture_string, line.len().to_string());
 
-        let sub1 = before.substring(checkStart, checkEnd);
-        let sub2 = line.substring(checkStart, checkEnd);
-        let sub3 = after.substring(checkStart, checkEnd);
+        let sub1 = before.substring(check_start, check_end);
+        let sub2 = line.substring(check_start, check_end);
+        let sub3 = after.substring(check_start, check_end);
         //println!("{}", sub2);
 
         let symbols1: Vec<&str> = re2.find_iter(sub1).map(|s| s.as_str()).collect();
         let symbols2: Vec<&str> = re2.find_iter(sub2).map(|s| s.as_str()).collect();
         let symbols3: Vec<&str> = re2.find_iter(sub3).map(|s| s.as_str()).collect();
-        
-        for s in symbols1.iter()
-        {
-          //  println!("{}", s);
-        }
-        for s in symbols2.iter()
-        {
-        //    println!("{}", s);
-        }
-        for s in symbols3.iter()
-        {
-      //      println!("{}", s);
-        }
-
         
 
         if symbols1.len() > 0 || symbols2.len() > 0 || symbols3.len() > 0
@@ -91,12 +75,6 @@ fn part1(contents: &str)
             let remove_regex = Regex::new(r"[^0-9a-zA-Z]").unwrap();
             let number = remove_regex.replace_all(capture.capture_string.as_str(), "");
             total += number.parse::<i32>().unwrap();
-        }
-        else{
-           //println!("{} {} {checkStart} {checkEnd} {}", capture.capture_string, capture.capture_line.to_string(), line.len().to_string());
-           //println!("{}", sub1);
-           //println!("{}", sub2);
-           //println!("{}", sub3);
         }
     }
 
@@ -109,25 +87,23 @@ fn part2(contents: &str)
 {
     let mut capture_list: Vec<CaptureData> = Vec::new();
 
-    let mut total = 0;
-
     for (i, line) in contents.lines().enumerate(){
         let re2 = Regex::new(r"[*]").unwrap();
         let captures2: Vec<&str> = re2.find_iter(line).map(|capture| capture.as_str()).collect();
 
-        let mut lineSubStart = 0;
+        let mut line_sub_start = 0;
         for capture in captures2
         {
-            let mut lineSub = line.substring(lineSubStart, line.len());
+            let line_sub = line.substring(line_sub_start, line.len());
             //println!("{}", lineSub);
              
             let mut data: CaptureData = CaptureData { capture_string: "".to_owned() , capture_pos: 0, capture_line: 0, capture_len: 0 };
             data.capture_string = capture.to_owned();
-            data.capture_pos = lineSubStart + lineSub.find(capture).unwrap_or(0);
+            data.capture_pos = line_sub_start + line_sub.find(capture).unwrap_or(0);
             data.capture_len = capture.len();
             data.capture_line = i;
             
-            lineSubStart = data.capture_pos+1;
+            line_sub_start = data.capture_pos+1;
             //println!("{}, {}, {}, {}", data.capture_string, data.capture_line, data.capture_pos, data.capture_len);
             capture_list.push(data);
         }
@@ -141,17 +117,17 @@ fn part2(contents: &str)
         let re2 = Regex::new(r"\d+").unwrap();
         let captures2: Vec<&str> = re2.find_iter(line).map(|capture| capture.as_str()).collect();
 
-        let mut lineSubStart = 0;
+        let mut line_sub_start = 0;
         for capture in captures2
         {
-            let lineSub = line.substring(lineSubStart, line.len());
+            let line_sub = line.substring(line_sub_start, line.len());
             let mut data: CaptureData = CaptureData { capture_string: "".to_owned() , capture_pos: 0, capture_line: 0, capture_len: 0 };
             data.capture_string = capture.to_owned();
-            data.capture_pos = lineSubStart + lineSub.find(capture).unwrap_or(0);
+            data.capture_pos = line_sub_start + line_sub.find(capture).unwrap_or(0);
             data.capture_len = capture.len();
             data.capture_line = i;
 
-            lineSubStart = data.capture_pos + data.capture_len;
+            line_sub_start = data.capture_pos + data.capture_len;
            // println!("{} {} {} {lineSubStart}", data.capture_string, data.capture_pos.to_string(), data.capture_len.to_string());
             num_list.push(data);
         }
@@ -167,39 +143,38 @@ fn part2(contents: &str)
         let before = if capture.capture_line > 0 {lines[capture.capture_line-1]} else {""};
         let after = if capture.capture_line < lines.len()-1 {lines[capture.capture_line+1]} else {""};
 
-        let mut checkStart = capture.capture_pos;
-        let mut checkEnd = capture.capture_pos + capture.capture_len;
+        let check_start = capture.capture_pos;
+        let check_end = capture.capture_pos + capture.capture_len;
 
  
         
         //println!("{} {checkStart} {checkEnd} {} {}", capture.capture_string, line.len().to_string(), capture.capture_line.to_string());
         let array: Vec<Vec<char>> = [before.chars().collect(), line.chars().collect(), after.chars().collect()].to_vec();
-        let mut numCoords1: Vec<(usize, usize)> = Vec::new();
+        let mut num_coords1: Vec<(usize, usize)> = Vec::new();
 
         let mut l = 0;
-        let mut c = 0;
         for line in array
         {
-            c = 0;
-            let mut justFound = false;
+            let mut c = 0;
+            let mut just_found = false;
             for char in line
             {
-                if justFound 
+                if just_found 
                 {
                     if !re2.is_match(&char.to_string())
                     {
                         //println!("found {}", char.to_string());
-                        justFound = false;
+                        just_found = false;
                     }
                 }
                 else if re2.is_match(&char.to_string())
                 {
                     //println!("{l},{c} {}", &char.to_string()); 
-                    if c >= checkStart-1 && c < checkEnd+1
+                    if c >= check_start-1 && c < check_end+1
                     {
                         //println!("{l},{c}");
-                        numCoords1.push((l,c));
-                        justFound = true;
+                        num_coords1.push((l,c));
+                        just_found = true;
                     }
                 }
                 c+=1;
@@ -210,18 +185,18 @@ fn part2(contents: &str)
         //println!("{}", numCoords1.len().to_string());
         
         let mut w: Vec<u32> = Vec::new();
-        for i in 0..numCoords1.len()
+        for i in 0..num_coords1.len()
         {
             for number in num_list.iter()
             {
                 //println!("{}", number.capture_string);
-                let mut checkStart = number.capture_pos;
-                let mut checkEnd = number.capture_pos + number.capture_len;
+                let check_start = number.capture_pos;
+                let check_end = number.capture_pos + number.capture_len;
 
-                let lineNo = capture.capture_line + numCoords1[i].0 - 1;
-                if lineNo == number.capture_line
+                let line_no = capture.capture_line + num_coords1[i].0 - 1;
+                if line_no == number.capture_line
                 {
-                    if numCoords1[i].1 >= checkStart && numCoords1[i].1 < checkEnd
+                    if num_coords1[i].1 >= check_start && num_coords1[i].1 < check_end
                     {
                         //println!("{checkStart}, {checkEnd}");
                         //println!("{}", number.capture_string);
@@ -237,7 +212,7 @@ fn part2(contents: &str)
         {
             for num in w.iter()
             {
-                println!("{} {num} {gear_ratio} {}", w.len().to_string(), (num*gear_ratio).to_string());
+                //println!("{} {num} {gear_ratio} {}", w.len().to_string(), (num*gear_ratio).to_string());
             
                 gear_ratio *= num;
             }

@@ -2,7 +2,7 @@ use std::{fs, collections::HashMap};
 use regex::Regex;
 
 fn main() {
-    let contents = fs::read_to_string("../inputs/input1.txt").expect("Test");
+    let contents = fs::read_to_string("./inputs/input1.txt").expect("Test");
     part_1(&contents);
     part_2(&contents);
     //println!("{contents}");
@@ -31,8 +31,6 @@ fn part_1(contents: &str){
 
 
 fn part_2(contents: &str){
-    let worded_digits = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
-
     let replacements = HashMap::from([
         ("one", "1"),
         ("two", "2"),
@@ -74,12 +72,8 @@ fn part_2(contents: &str){
         let digits: Vec<&str> = re.find_iter(string.as_str()).map(|n| n.as_str()).collect();
         if digits.is_empty(){
             continue;
-fn get_numbers(line: &str)
-{
-    
-}
         }
-        println!("{}{}", digits[0], digits.last().unwrap());
+        //println!("{}{}", digits[0], digits.last().unwrap());
 
 
         let combined = format!("{}{}", digits[0], digits.last().unwrap());

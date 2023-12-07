@@ -1,4 +1,4 @@
-use std::{fs, collections::HashMap};
+use std::fs;
 
 struct GameData{
     game_id: i32,
@@ -12,7 +12,7 @@ const GREEN_MAX: i32 = 13;
 const BLUE_MAX: i32 = 14;
 
 fn main(){
-    let contents = fs::read_to_string("../inputs/input2.txt").expect("Not Found");
+    let contents = fs::read_to_string("./inputs/input2.txt").expect("Not Found");
     part1(&contents);
     part2(&contents);
 }
@@ -131,7 +131,7 @@ fn part2(contents: &str){
     let mut sum_of_power: i32 = 0;
     for game in games{
 //        println!("Game {}, Red: {}, Green: {}, Blue: {}", game.game_id, game.red_count, game.green_count, game.blue_count);
-        sum_of_power += (game.red_count * game.green_count * game.blue_count);
+        sum_of_power += game.red_count * game.green_count * game.blue_count;
     }
 
     println!("Part 2 Answer = {}", sum_of_power.to_string());
