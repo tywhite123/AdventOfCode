@@ -15,7 +15,7 @@ fn part1(contents: &str)
     let mut lines = contents.lines();
     let mut map: HashMap<&str, (&str, &str)> = HashMap::new();
 
-    let instructions = lines.next().unwrap();
+    let instructions: Vec<char> = lines.next().unwrap().chars().collect();
     lines.next();
     for l in lines
     {
@@ -28,7 +28,7 @@ fn part1(contents: &str)
         map.insert(splits[0], directions);
     }
 
-    let no_of_steps = find_steps("AAA", instructions, &map);
+    let no_of_steps = find_steps("AAA", &instructions, &map);
 
     println!("Part 1 Answer = {no_of_steps}");
 }
@@ -40,7 +40,7 @@ fn part2(contents: &str)
     let re = Regex::new(r"([A-Z]{2}[A])").unwrap();
     let mut starts: Vec<&str> = Vec::new();
 
-    let instructions = lines.next().unwrap();
+    let instructions: Vec<char> = lines.next().unwrap().chars().collect();
     lines.next();
     for l in lines
     {
@@ -57,7 +57,7 @@ fn part2(contents: &str)
         map.insert(splits[0], directions);
     }
 
-    let no_of_steps_arr: Vec<i32> = starts.iter().map(|x| find_steps(*x, instructions, &map)).collect();
+    let no_of_steps_arr: Vec<i32> = starts.iter().map(|x| find_steps(*x, &instructions, &map)).collect();
     let mut no_of_steps: i64 = no_of_steps_arr[0] as i64;
     for n in 0..no_of_steps_arr.len()
     {
@@ -67,9 +67,8 @@ fn part2(contents: &str)
     println!("Part 2 Answer = {no_of_steps}");
 }
 
-fn find_steps(start: &str, instructions: &str, map: &HashMap<&str, (&str, &str)>) -> i32
+fn find_steps(start: &str, instructions: &Vec<char>, map: &HashMap<&str, (&str, &str)>) -> i32
 {
-
     let mut no_of_steps = 0;
     let mut current_instruction = 0;
     let mut current = start;
@@ -81,16 +80,14 @@ fn find_steps(start: &str, instructions: &str, map: &HashMap<&str, (&str, &str)>
         {
             current_instruction = 0;
         }
-        let next_step = instructions.chars().nth(current_instruction).unwrap();
+        let next_step = instructions[current_instruction];
         current_instruction+=1; 
 
-        if next_step == 'L'
+        match next_step
         {
-            current = map.get(current).unwrap().0;
-        }
-        else
-        {
-            current = map.get(current).unwrap().1;
+            'L' => current = map.get(current).unwrap().0,
+            'R' => current = map.get(current).unwrap().1,
+            _ => panic!("Nowt")
         }
 
         no_of_steps += 1;
