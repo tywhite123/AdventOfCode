@@ -20,7 +20,11 @@ fn part1(contents: &str)
     for l in lines
     {
         let splits: Vec<&str> = l.split(" = ").collect();
-        let directions: (&str, &str) = splits[1].trim_start_matches('(').trim_end_matches(')').split_once(", ").unwrap();
+        let directions: (&str, &str) = splits[1]
+            .trim_start_matches('(')
+            .trim_end_matches(')')
+            .split_once(", ")
+            .unwrap();
         map.insert(splits[0], directions);
     }
 
@@ -45,7 +49,11 @@ fn part2(contents: &str)
         {
             starts.push(splits[0]);
         }
-        let directions: (&str, &str) = splits[1].trim_start_matches('(').trim_end_matches(')').split_once(", ").unwrap();
+        let directions: (&str, &str) = splits[1]
+            .trim_start_matches('(')
+            .trim_end_matches(')')
+            .split_once(", ")
+            .unwrap();
         map.insert(splits[0], directions);
     }
 
