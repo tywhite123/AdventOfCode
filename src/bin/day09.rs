@@ -1,4 +1,4 @@
-use std::{fs, cmp::Ordering};
+use std::fs;
 
 fn main() {
     println!("Day 09:");
