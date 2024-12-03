@@ -1,7 +1,7 @@
 use std::fs;
 
 fn main() {
-    println!("Template:");
+    println!("Day 02:");
     
     let contents = fs::read_to_string("./inputs/input02.txt").expect("Not Found");
 
