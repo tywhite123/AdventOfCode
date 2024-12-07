@@ -94,7 +94,6 @@ fn part2(contents: &str)
     //println!("{:?}", map);
 
     let s = map.clone();
-    let mut current_ob_pos: (usize, usize) = (0,0);
     let mut loops = 0;
     let orig_guard_pos = current_guard_pos;
     for e in map.iter_mut()
@@ -103,7 +102,7 @@ fn part2(contents: &str)
 
         let mut route: HashSet<((usize, usize), usize)> = HashSet::new();
 
-        current_ob_pos = *e.0;
+        let current_ob_pos: (usize, usize) = *e.0;
 
         let mut has_exit = false;
         while !has_exit {

@@ -30,7 +30,7 @@ fn part1(contents: &str)
     let chars: Vec<char> = split_values.clone().into_iter().flat_map(|s| s.chars()).collect();
     
 
-    let mut current_char_to_find: usize = 0;
+    //let mut current_char_to_find: usize = 0;
     let mut total_found = 0;
 
 
@@ -38,7 +38,7 @@ fn part1(contents: &str)
     {
         for x in 0..line_len
         {
-            current_char_to_find = 0;
+            let mut current_char_to_find: usize = 0;
             let letter = chars[x+(y*line_len)];
 
             if letter == search_word.chars().nth(current_char_to_find).unwrap()
@@ -88,7 +88,6 @@ fn part2(contents: &str)
     let line_len = split_values[0].len();
     let columns = contents.len()/line_len;
 
-    let search_word = "XMAS";
 
     let chars: Vec<char> = split_values.clone().into_iter().flat_map(|s| s.chars()).collect();
     
