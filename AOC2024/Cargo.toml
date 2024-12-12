@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 regex = "1.10.2"
 itertools = "0.10.5"
+cached = "0.54.0"
