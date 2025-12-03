@@ -1,0 +1,8 @@
+[package]
+name = "AOC2025"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+regex = "1.10.2"
+fancy-regex = "0.13"
